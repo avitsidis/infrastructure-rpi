@@ -1,0 +1,35 @@
+- name: setup mysql objects 
+  hosts: mysqldb
+  remote_user: pi
+  become: yes
+
+  tasks:
+  - name: Create a new database with name 'stockdev'
+    mysql_db:
+      name: stock-dev
+      state: present
+      login_user: 'root'
+      login_password: '{{ root_pass }}'
+  
+  - name: Set user stock-dev-user
+    mysql_user:
+      login_host: 'localhost'
+      login_user: 'root'
+      login_password: '{{ root_pass }}'
+      host: '%'
+      name: 'stock-dev-user'
+      password: '{{ stock_dev_user_pass }}'
+      priv: 'stock-dev.*:SELECT,INSERT,DELETE,UPDATE'
+      state: present
+        
+  - name: Set user stock-dev-migration
+    mysql_user:
+      login_host: 'localhost'
+      login_user: 'root'
+      login_password: '{{ root_pass }}'
+      host: '%'
+      name: 'stock-dev-migration'
+      password: '{{ stock_dev_migration_pass }}'
+      priv: 'stock-dev.*:ALTER,CREATE'
+      state: present
+      
