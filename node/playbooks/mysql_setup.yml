@@ -1,0 +1,43 @@
+- name: setup for all rpi nodes 
+  hosts: mysqldb
+  remote_user: pi
+  become: yes
+
+  tasks:
+
+  - name: Install mariaDB Server
+    apt: 
+      name: mariadb-server 
+      state: present
+
+  - name: Install mariaDB Client
+    apt: 
+      name: mariadb-client 
+      state: present
+  
+  - name: Start the MariaDB service
+    action: service name=mariadb state=started
+
+  - name: Install PyMySQL python package
+    pip:
+      name: PyMySQL
+
+  - name: Change the authentication plugin of MySQL root user to mysql_native_password
+    shell: mysql -u root -e 'UPDATE mysql.user SET plugin="mysql_native_password" WHERE user="root" AND host="localhost"'
+    run_once: true
+
+  - name: Flush Privileges
+    shell: mysql -u root -e 'FLUSH PRIVILEGES'
+    run_once: true
+
+  - name: Set MySQL root password
+    mysql_user:
+      login_host: 'localhost'
+      login_user: 'root'
+      login_password: ''
+      name: 'root'
+      password: '{{ root_pass }}'
+      state: present
+    run_once: true
+
+  
