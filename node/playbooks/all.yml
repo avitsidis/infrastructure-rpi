@@ -1,0 +1,48 @@
+---
+- name: setup for all rpi nodes 
+  hosts: all
+  remote_user: pi
+  become: yes
+
+  tasks:
+  - name: Have vim install on all nodes
+    apt:
+      name: "vim"
+      state: present
+  
+  - name: Have pip install on all nodes
+    apt:
+      name: "python3-pip"
+      state: present
+
+  - name: copy public keys
+    copy:
+      src: files/authorized_keys
+      dest: /home/pi/.ssh/authorized_keys
+      owner: pi
+      group: pi
+      mode: 0600
+
+  - name: Allow 'sudo' group to have passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%sudo'
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+  - name: Disable root login over SSH
+    lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
+    notify:
+      - restart sshd
+
+  - name: Disable password login
+    lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
+    notify:
+      - restart sshd
+
+  handlers:
+  - name: restart sshd
+    service:
+      name: sshd
+      state: restarted

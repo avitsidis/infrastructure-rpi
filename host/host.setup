@@ -1,0 +1,19 @@
+sudo apt update
+sudo apt install software-properties-common
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
+
+sudo apt install ssh
+sudo apt install sshpass
+
+ssh-keygen
+
+echo "raspberry" | sshpass ssh-copy-id -f -i  ~/.ssh/id_rsa.pub pi:raspberry@192.168.2.1
+echo "raspberry" | sshpass ssh-copy-id -f -i  ~/.ssh/id_rsa.pub pi:raspberry@192.168.2.4
+
+
+replace /etc/ansible/hosts with the one available here
+
+ansible-playbook all.yml -u pi --ask-become-pass
+
+
