@@ -1,0 +1,14 @@
+- name: setup for all rpi nodes 
+  hosts: webserver
+  remote_user: pi
+  become: yes
+
+  tasks:
+
+  - name: Install nginx
+    apt: 
+      name: nginx
+      state: present
+  
+  - name: Start the nginx service
+    action: service name=nginx state=started
