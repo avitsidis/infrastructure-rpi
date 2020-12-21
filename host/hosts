@@ -4,5 +4,8 @@
 [webserver]
 192.168.2.4
 
+[runner]
+192.168.2.3
+
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3

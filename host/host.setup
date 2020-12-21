@@ -9,6 +9,7 @@ sudo apt install sshpass
 ssh-keygen
 
 echo "raspberry" | sshpass ssh-copy-id -f -i  ~/.ssh/id_rsa.pub pi:raspberry@192.168.2.1
+echo "raspberry" | sshpass ssh-copy-id -f -i  ~/.ssh/id_rsa.pub pi:raspberry@192.168.2.3
 echo "raspberry" | sshpass ssh-copy-id -f -i  ~/.ssh/id_rsa.pub pi:raspberry@192.168.2.4
 
 
