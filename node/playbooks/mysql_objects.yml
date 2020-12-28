@@ -30,6 +30,6 @@
       host: '%'
       name: 'stock-dev-migration'
       password: '{{ stock_dev_migration_pass }}'
-      priv: 'stock-dev.*:ALTER,CREATE'
+      priv: 'stock-dev.*:ALTER,CREATE,SELECT,INSERT,DELETE,UPDATE,INDEX,DROP'
       state: present
       
