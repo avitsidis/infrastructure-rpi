@@ -9,6 +9,30 @@
     apt: 
       name: nginx
       state: present
-  
+
+  - name: Install Uncomplicated firewall (ufw)
+    apt: 
+      name: ufw
+      state: present
+
   - name: Start the nginx service
     action: service name=nginx state=started
+
+  - name: Create root application folder
+    file:
+      state: directory
+      path: "/var/housestock/"
+      owner: pi
+      group: pi
+      mode: '0774'
+
+  # - name: Install certbot
+  #   apt: 
+  #     name: certbot
+  #     state: present
+
+  # - name: Install certbot nginx
+  #   apt: 
+  #     name: python-certbot-nginx
+  #     state: present
+    
