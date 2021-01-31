@@ -1,0 +1,11 @@
+127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+127.0.1.1       tools.lan.feydis.be
+192.168.2.3     tools.lan.feydis.be
+
+192.168.2.1     mysql.lan.feydis.be
+192.168.2.4     webapps.lan.feydis.be
+192.168.2.3     tools.lan.feydis.be

@@ -1,0 +1,43 @@
+- name: setup for tool rpi nodes 
+  hosts: tools
+  remote_user: pi
+  become: yes
+
+# based on https://www.howtoforge.com/how-to-setup-local-dns-server-using-dnsmasq-on-ubuntu-20-04/
+  tasks:
+  - name: disable Systemd-resolved service
+    shell: systemctl disable --now systemd-resolved
+  - name: setup resolv.conf
+    copy:
+      src: files/resolv.conf
+      dest: /etc/resolv.conf
+      owner: root
+      group: root
+      mode: u=rw,g=rw,o=r
+  - name: setup resolv.conf
+    copy:
+      src: files/hosts
+      dest: /etc/hosts
+      owner: root
+      group: root
+      mode: u=rw,g=rw,o=r
+  - name: set hostname
+    copy:
+      dest: "/etc/hostname"
+      content: tools.lan.feydis.be
+  - name: install dnsmasq
+    apt: 
+      name: dnsmasq
+      state: present
+  - name: install dnsutils
+    apt: 
+      name: dnsmasq
+      state: present
+  - name: install dnsmasq
+    apt: 
+      name: ldnsutils
+      state: present
+  - name: restart dnsmasq
+    shell: systemctl restart dnsmasq
+
+      

@@ -1,4 +1,4 @@
-- name: setup for all rpi nodes 
+- name: setup for mysql rpi nodes 
   hosts: mysqldb
   remote_user: pi
   become: yes

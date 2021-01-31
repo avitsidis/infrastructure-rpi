@@ -1,4 +1,4 @@
-- name: setup for all rpi nodes 
+- name: setup for webserver rpi nodes 
   hosts: webserver
   remote_user: pi
   become: yes

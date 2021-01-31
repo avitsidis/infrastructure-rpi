@@ -4,7 +4,7 @@
 [webserver]
 192.168.2.4
 
-[runner]
+[tools]
 192.168.2.3
 
 [all:vars]
