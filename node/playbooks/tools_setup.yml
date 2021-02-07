@@ -9,13 +9,6 @@
     shell: systemctl disable --now systemd-resolved
   - name: setup resolv.conf
     copy:
-      src: files/resolv.conf
-      dest: /etc/resolv.conf
-      owner: root
-      group: root
-      mode: u=rw,g=rw,o=r
-  - name: setup resolv.conf
-    copy:
       src: files/hosts
       dest: /etc/hosts
       owner: root

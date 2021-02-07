@@ -5,16 +5,25 @@
   become: yes
 
   tasks:
-  - name: Have vim install on all nodes
-    apt:
-      name: "vim"
-      state: present
-  
-  - name: Have pip install on all nodes
-    apt:
-      name: "python3-pip"
+  - name: Have tools installed on all nodes
+    apt: 
+      name: ['vim', 'dnsutils', 'ldnsutils', 'ldnsutils', 'python3-pip']
       state: present
 
+  - name: setup dns
+    copy:
+      src: files/authorized_keys
+      dest: /home/pi/.ssh/authorized_keys
+      owner: pi
+      group: pi
+      mode: 0600
+  - name: setup resolv.conf
+    copy:
+      src: files/resolv.conf
+      dest: /etc/resolv.conf
+      owner: root
+      group: root
+      mode: u=rw,g=rw,o=r
   - name: copy public keys
     copy:
       src: files/authorized_keys
