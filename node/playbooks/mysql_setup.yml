@@ -36,3 +36,7 @@
       name: mysqld
       state: restarted
     when: service_conf.changed
+  - name: set hostname
+    copy:
+      dest: "/etc/hostname"
+      content: mysql.lan.feydis.be

@@ -4,3 +4,4 @@
 2. once SD card written, put ssh file in the boot partition
 3. run host.setup commands
 4. ansible-playbook -e ansible_python_interpreter=/usr/bin/python3 all.yml
+

@@ -8,6 +8,7 @@ ff02::2         ip6-allrouters
 
 192.168.2.1     mysql.lan.feydis.be
 192.168.2.4     webapps.lan.feydis.be
+192.168.2.4     web.lan.feydis.be
 192.168.2.3     tools.lan.feydis.be
 192.168.2.3     dns.lan.feydis.be
 

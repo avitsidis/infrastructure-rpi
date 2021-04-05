@@ -2,6 +2,7 @@
   hosts: webserver
   remote_user: pi
   become: yes
+  become_user: root
 
   tasks:
 
@@ -26,6 +27,95 @@
       group: pi
       mode: '0774'
 
+  - name: set hostname
+    copy:
+      dest: "/etc/hostname"
+      content: web.lan.feydis.be
+  - name: add pi in group www-data
+    ansible.builtin.user:
+      name: pi
+      groups: www-data
+      append: yes
+
+  - name: ensure permissions of nginx conf
+    ansible.builtin.file:
+      path: /etc/nginx/nginx.conf
+      owner: www-data
+      group: www-data
+      mode: '0664'
+  - name: ensure permissions of nginx folder
+    ansible.builtin.file:
+      path: /etc/nginx
+      owner: www-data
+      group: www-data
+      mode: '0664'
+
+  - name: setup nginx
+    copy:
+      src: files/nginx/nginx.conf
+      dest: /etc/nginx/nginx.conf
+    notify:
+      - restart nginx
+
+  - name: setup default site
+    copy:
+      src: files/nginx/default
+      dest: /etc/nginx/sites-available/default
+      owner: www-data
+      group: www-data
+      mode: 0664
+    notify:
+      - restart nginx
+  - name: Create a default site symbolic link
+    ansible.builtin.file:
+      src: /etc/nginx/sites-available/default
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+      owner: root
+      group: root
+      mode: 0777
+    notify:
+      - restart nginx
+
+  - name: setup dev-housetock proxy for dev
+    copy:
+      src: files/nginx/dev-housestock
+      dest: /etc/nginx/sites-available/dev-housetock
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - restart nginx
+  - name: Create a symbolic link for dev
+    ansible.builtin.file:
+      src: /etc/nginx/sites-available/dev-housetock
+      dest: /etc/nginx/sites-enabled/dev-housetock
+      state: link
+      owner: root
+      group: root
+      mode: 0777
+    notify:
+      - restart nginx
+
+  - name: setup housetock proxy
+    copy:
+      src: files/nginx/housestock
+      dest: /etc/nginx/sites-available/housetock
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - restart nginx
+  - name: Create a symbolic link
+    ansible.builtin.file:
+      src: /etc/nginx/sites-available/housetock
+      dest: /etc/nginx/sites-enabled/housetock
+      state: link
+      owner: root
+      group: root
+      mode: 0777
+    notify:
+      - restart nginx
   # - name: Install certbot
   #   apt: 
   #     name: certbot
@@ -35,4 +125,9 @@
   #   apt: 
   #     name: python-certbot-nginx
   #     state: present
-    
+  
+  handlers:
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted
